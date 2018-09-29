@@ -9,6 +9,14 @@ import Vapor
 import Crypto
 import Authentication
 
+private extension User {
+    func user(with digest: BCryptDigest) throws -> User {
+        
+        return try User(userID: UUID().uuidString,
+                        account: account,
+                        password: digest.hash(password))
+    }
+}
 
 final class UserController: RouteCollection {
     
@@ -30,17 +38,6 @@ final class UserController: RouteCollection {
         
     }
     
-}
-
-
-private extension User {
-    
-    func user(with digest: BCryptDigest) throws -> User {
-        
-        return try User(userID: UUID().uuidString,
-                        account: account,
-                        password: digest.hash(password))
-    }
 }
 
 extension UserController {
